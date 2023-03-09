@@ -1,0 +1,33 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+    <h1>All posts</h1>
+    <h3>Number of posts: {{ posts | length }}</h3>
+    <hr>
+    {% if posts %}
+        <table style="width:600px; height:150px">
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>Date</b></td>
+                <td><b>Text</b></td>
+            </tr>
+
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.post_name | nofoobar }}</td>
+                <td>{{ post.post_datetime | date:'d M Y' }}</td>
+                <td>{{ post.post_value | truncatechars:20 | nofoobar }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>No posts</h2>
+    {% endif %}
+<!--    {{ posts }}-->
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+        <h2>
+        <td>{{ post.post_name | nofoobar }}</td>
+        <br><br>
+        <td>{{ post.post_datetime | date:'d M Y' }}</td>
+        <br><br>
+        <td>{{ post.post_value | nofoobar }}</td>
+        </h2>
+<!--<h1>{{ post }}</h1>-->
+{% endblock content %}
