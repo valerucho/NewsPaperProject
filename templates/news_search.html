@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+<!--  загружаем пользовательские фильтры -->
+{% load custom_filters %}
+<!-- Название у нас будет News Search-->
+{% block title %}
+    News Search
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все новости/статьи -->
+{% block content %}
+    <h1>Новости и статьи</h1>
+    <h3>Всего найдено новостей: {{ page_obj.paginator.count }}</h3>
+    {# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+    <form action="" method="get">
+        {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
+        {{ filterset.form.as_p }}
+        {# Добавим кнопку отправки данных формы #}
+        <input type="submit" value="Найти" />
+    </form>
+    <hr>
+    {% if news_search %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Превью</td>
+            </tr>
+            {% for post in news_search %}
+            <tr>
+                <td>{{ post.title|censor }}</td>
+                <td>{{ post.add_date|date:'d.m.Y' }}</td>
+                <td>{{ post.text|truncatechars:21|censor }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Новости по заданным критериям поиска отсутствуют!</h2>
+    {% endif %}
+
+    {# Добавляем пагинацию на страницу #}
+
+    {# Информация о предыдущих страницах #}
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            {% if page_obj.previous_page_number != 2 %}
+                ...
+            {% endif %}
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {# Информация о текущей странице #}
+    {{ page_obj.number }}
+
+    {# Информация о следующих страницах #}
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number  %}
+            {% if paginator.num_pages|add:-1 != page_obj.next_page_number %}
+                ...
+            {% endif %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+{% endblock content %}
+</html>
