@@ -2,23 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-# Create your models here.
 
-
-# Модель Author
-# Модель, содержащая объекты всех авторов.
-# Имеет следующие поля:
-# - связь «один к одному» с встроенной моделью пользователей User;
-# - рейтинг пользователя.
 class Author(models.Model):
     author = models.OneToOneField(User, on_delete=models.CASCADE)
     rate = models.IntegerField(default=0)
 
-    # Метод update_rating() обновляет рейтинг пользователя.
-    # Он состоит из:
-    # - суммарного рейтинга каждой статьи автора, умноженного на 3;
-    # - суммарного рейтинга всех комментариев автора;
-    # - суммарного рейтинга всех комментариев к статьям автора.
     def update_rating(self):
         post_rate = sum(Post.objects.filter(author=self).values_list('rate', flat=True))
         comment_rate = sum(Comment.objects.filter(author__author=self).values_list('rate', flat=True))
@@ -31,10 +19,6 @@ class Author(models.Model):
         return self.author.username
 
 
-# Модель Category
-# Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.).
-# Имеет единственное поле: название категории.
-# Поле должно быть уникальным (в определении поля необходимо написать параметр unique = True).
 class Category(models.Model):
     category_name = models.CharField(max_length=50, unique=True)
 
@@ -42,17 +26,6 @@ class Category(models.Model):
         return self.category_name
 
 
-# Модель Post
-# Эта модель должна содержать в себе статьи и новости, которые создают пользователи.
-# Каждый объект может иметь одну или несколько категорий.
-# Соответственно, модель должна включать следующие поля:
-# связь «один ко многим» с моделью Author;
-# поле с выбором — «статья» или «новость»;
-# автоматически добавляемая дата и время создания;
-# связь «многие ко многим» с моделью Category (с дополнительной моделью PostCategory);
-# заголовок статьи/новости;
-# текст статьи/новости;
-# рейтинг статьи/новости.
 POST_KINDS = [
     ('AR', 'Статья'),
     ('NE', 'Новость')
@@ -68,7 +41,6 @@ class Post(models.Model):
     text = models.TextField()
     rate = models.IntegerField(default=0)
 
-    # Методы like() и dislike() увеличивают/уменьшают рейтинг статьи/новости на единицу.
     def like(self):
         self.rate += 1
         self.save()
@@ -92,14 +64,12 @@ class Post(models.Model):
         return reverse('post', args=[str(self.id)])
 
 
-# Модель PostCategory
-# Промежуточная модель для связи «многие ко многим»:
-# связь «один ко многим» с моделью Post;
-# связь «один ко многим» с моделью Category.
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.category
 
 # Модель Comment
 # Под каждой новостью/статьёй можно оставлять комментарии, поэтому необходимо организовать
@@ -126,3 +96,6 @@ class Comment(models.Model):
     def dislike(self):
         self.rate -= 1
         self.save()
+
+    def __str__(self):
+        return self.text
