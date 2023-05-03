@@ -71,16 +71,7 @@ class PostCategory(models.Model):
     def __str__(self):
         return self.category
 
-# Модель Comment
-# Под каждой новостью/статьёй можно оставлять комментарии, поэтому необходимо организовать
-# их способ хранения тоже.
-# Модель будет иметь следующие поля:
-# связь «один ко многим» с моделью Post;
-# связь «один ко многим» со встроенной моделью User (комментарии может оставить
-# любой пользователь, необязательно автор);
-# текст комментария;
-# дата и время создания комментария;
-# рейтинг комментария.
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -88,7 +79,6 @@ class Comment(models.Model):
     add_datetime = models.DateTimeField(auto_now_add=True)
     rate = models.IntegerField(default=0)
 
-    # Методы like() и dislike() увеличивают/уменьшают рейтинг комментария на единицу.
     def like(self):
         self.rate += 1
         self.save()
@@ -99,3 +89,16 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
