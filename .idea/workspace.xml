@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddfaf48b-fa58-4e1d-8bfd-d628c93c4cb0" name="Changes" comment="modified:   NewsPortal/settings.py&#10;modified:   accounts/forms.py">
-      <change afterPath="$PROJECT_DIR$/news/templates/account/email/signup_confirmation_message.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/new_post_email.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/subscribe.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/unsubscribe.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/weekly_digest.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/news/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/news/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +61,14 @@
       <option name="presentableId" value="Default" />
       <updated>1681398398323</updated>
     </task>
+    <task id="LOCAL-00001" summary="modified:   NewsPortal/settings.py&#10;modified:   accounts/forms.py">
+      <created>1683133784990</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1683133784990</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
